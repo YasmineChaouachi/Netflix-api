@@ -15,12 +15,13 @@ router.post("/register", async (req, res) => {
             username: data.username,
             email: data.email,
             password: data.password,
+            isAdmin:data.isAdmin,
         });
         console.log(newUser);
 
         const savedUser = await newUser.save();
 
-        res.status(201).send({ savedUser, message: "user added succesfully" });
+        res.status(201).send({ savedUser, message: "user added succesfully ✅" });
 
     } catch (err) {
         console.log(err);
