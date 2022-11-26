@@ -119,5 +119,15 @@ router.get("/random", async (req, res) => {
 
 });
 
+//GET ALL MOVIES & SERIES
+
+router.get("/find/", async (req, res) => {
+    try {
+        let movies = await Movie.find();
+        res.status(200).send(movies.reverse());
+    } catch (e) {
+        res.status(400).send({ message: "error fetching movies" });
+    }
+});
 
 module.exports = router;
