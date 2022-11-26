@@ -64,5 +64,30 @@ router.delete("/:id", async (req, res) => {
 
 });
 
+//GET
+
+router.get("/find/:id", async (req, res) => {
+    try {
+        let type = req.query.type;
+        let movie;
+
+        if (type == "series") {
+            movie = await Movie.aggregate(
+                [
+                    { $match: { isSeries: true } },
+                    { $sample: { size: 1 } },
+                ]);
+        } else {
+            movie = await Movie.aggregate(
+                [
+                    { $match: { isSeries: false } },
+                    { $sample: { size: 1 } },
+                ]);
+        }
+        res.status(200).json(movie)
+    } catch (e) {
+        res.status(400).send({ message: "error fetching movies" })
+    }
+});
 
 module.exports = router;
