@@ -15,6 +15,7 @@ router.post("/register", async (req, res) => {
             username: data.username,
             email: data.email,
             password: data.password,
+            isAdmin:data.isAdmin,
         });
         console.log(newUser);
 
