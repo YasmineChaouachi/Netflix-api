@@ -12,7 +12,7 @@ router.patch("/:id", async (req, res) => {
         let user = await User.findOneAndUpdate({ _id: userId }, data)
 
         if (user) {
-            res.status(200).send({ message: "user updated succesfully" })
+            res.status(200).send({ message: "user updated succesfully ✅" })
         }
         else {
             res.status(404).send({ message: "user not found !" })
@@ -34,7 +34,7 @@ router.delete("/:id", async (req, res) => {
         let user = await User.findOneAndDelete({ _id: userId })
 
         if (user) {
-            res.status(200).send({ message: "user deleted succesfully" })
+            res.status(200).send({ message: "user deleted succesfully ✅" })
         }
         else {
             res.status(404).send({ message: "user not found !" })
@@ -66,7 +66,7 @@ router.get("/find/", async (req, res) => {
     } catch (e) {
         res.status(400).send({ message: "error fetching users" });
     }
-})
+});
 
 //GET USER STATS
 
@@ -106,7 +106,7 @@ router.get("/sats/", async (req, res) => {
     } catch (e) {
         res.status(400).json(e);
     }
-})
+});
 
 
 module.exports = router;
