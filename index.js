@@ -9,6 +9,8 @@ const mongoose = require("mongoose")
 const authenController = require("./routes/authenController");
 const usersController = require("./routes/usersController");
 const moviesController = require("./routes/moviesController");
+const listsController = require("./routes/listsController");
+
 
 
 // IMPORT DB
@@ -20,6 +22,8 @@ app.use(express.json())
 app.use("/api/auth", authenController);
 app.use("/api/auth", usersController);
 app.use("/api/movie", moviesController);
+app.use("/api/lists", listsController);
+
 
 
 // RUN SERVER
