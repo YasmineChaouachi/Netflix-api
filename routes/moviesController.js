@@ -43,5 +43,26 @@ router.patch("/:id", async (req, res) => {
 
 })
 
+//DELETE
+
+router.delete("/:id", async (req, res) => {
+    try {
+        let movieId = req.params.id
+
+        let movie = await User.findOneAndDelete({ _id: movieId })
+
+        if (movie) {
+            res.status(200).send({ message: "The movie has been deleted... ✅" })
+        }
+        else {
+            res.status(404).send({ message: "Movie not found !" })
+        }
+
+    } catch (error) {
+        res.status(400).send({ message: "error fetching movie" })
+    }
+
+});
+
 
 module.exports = router;
