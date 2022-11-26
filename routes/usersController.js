@@ -66,7 +66,7 @@ router.get("/find/", async (req, res) => {
     } catch (e) {
         res.status(400).send({ message: "error fetching users" });
     }
-})
+});
 
 //GET USER STATS
 
@@ -106,7 +106,7 @@ router.get("/sats/", async (req, res) => {
     } catch (e) {
         res.status(400).json(e);
     }
-})
+});
 
 
 module.exports = router;

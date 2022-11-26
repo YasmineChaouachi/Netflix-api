@@ -19,7 +19,7 @@ app.use(express.json())
 // ROUTING
 app.use("/api/auth", authenController);
 app.use("/api/auth", usersController);
-app.use("/api/auth", moviesController);
+app.use("/api/movie", moviesController);
 
 
 // RUN SERVER
