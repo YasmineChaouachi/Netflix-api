@@ -47,7 +47,27 @@ router.delete("/:id", async (req, res) => {
 });
 
 //GET
+
+router.get("/find/:id", async (req, res) => {
+    try {
+        let users = await User.findById(req.params.id)
+        res.status(200).send(users)
+    } catch (e) {
+        res.status(400).send({ message: "error fetching users" })
+    }
+})
+
 //GET ALL USERS
+
+router.get("/find/", async (req, res) => {
+        try {
+            let users = await User.find();
+            res.status(200).send(users);
+        } catch (e) {
+            res.status(400).send({ message: "error fetching users" });
+        }
+})
+
 //GET USER STATS
 
 module.exports = router;
