@@ -61,7 +61,8 @@ router.get("/find/:id", async (req, res) => {
 
 router.get("/find/", async (req, res) => {
     try {
-        let users = await User.find();
+        let query = req.query.new;
+        let users = query ? await User.find().limit(5) : await User.find();
         res.status(200).send(users);
     } catch (e) {
         res.status(400).send({ message: "error fetching users" });
