@@ -44,12 +44,11 @@ router.patch("/:id", async (req, res) => {
 })
 
 //DELETE
-
 router.delete("/:id", async (req, res) => {
     try {
         let movieId = req.params.id
 
-        let movie = await User.findOneAndDelete({ _id: movieId })
+        let movie = await Movie.findOneAndDelete({ _id: movieId })
 
         if (movie) {
             res.status(200).send({ message: "The movie has been deleted... ✅" })

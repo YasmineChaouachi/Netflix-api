@@ -20,7 +20,7 @@ app.use(express.json())
 
 // ROUTING
 app.use("/api/auth", authenController);
-app.use("/api/auth", usersController);
+app.use("/api/users", usersController);
 app.use("/api/movie", moviesController);
 app.use("/api/lists", listsController);
 
