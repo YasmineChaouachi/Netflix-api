@@ -15,7 +15,7 @@ router.post("/register", async (req, res) => {
             username: data.username,
             email: data.email,
             password: data.password,
-            isAdmin:data.isAdmin,
+            isAdmin: data.isAdmin,
         });
         console.log(newUser);
 
@@ -40,8 +40,8 @@ router.post("/login", async (req, res) => {
         if (user) {
             let compare = bcrypt.compareSync(data.password, user.password)
             if (compare) {
-                let myToken = jwt.sign({ role: user.role, id: user._id }, "SECRET-KEY")
-                res.status(200).send({user, token: myToken })
+                const accessToken = jwt.sign({ id: user._id, isAdmin: user.isAdmin }, "SECRET_KEY", { expiresIn: "5d" });
+                res.status(200).send({ user, accessToken })
             } else {
                 res.status(404).send({ message: "user not found !" })
             }
@@ -50,6 +50,7 @@ router.post("/login", async (req, res) => {
         }
 
     } catch (error) {
+        console.log(error);
         res.status(400).send({ message: "error fetching user" })
     }
 })

@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const Movie = require("../models/Movie");
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
+const verify = require("../verifyToken")
 
 //CREATE
 
@@ -23,49 +24,59 @@ router.post("/", async (req, res) => {
 
 //UPDATE
 
-router.patch("/:id", async (req, res) => {
-    try {
-        let movieId = req.params.id
-        let data = req.body
-        let movie = await Movie.findOneAndUpdate({ _id: movieId }, data)
+router.patch("/:id", verify, async (req, res) => {
+    if (req.params.isAdmin) {
+        try {
+            let movieId = req.params.id
+            let data = req.body
+            let movie = await Movie.findOneAndUpdate({ _id: movieId }, { $set: data }, { new: true })
 
-        if (movie) {
-            res.status(200).send({ message: "Movie updated succesfully ✅" })
-        }
-        else {
-            res.status(404).send({ message: "Movie not found !" })
-        }
+            if (movie) {
+                res.status(200).send({ message: "Movie updated succesfully ✅" })
+            }
+            else {
+                res.status(404).send({ message: "Movie not found !" })
+            }
 
-    } catch (error) {
-        res.status(400).send({ message: "error fetching movie" })
+        } catch (error) {
+            res.status(400).send({ message: "error fetching movie" })
+        }
+    } else {
+        res.status(403).send({ message: "You're not allowed!" })
     }
+
 
 
 })
 
 //DELETE
-router.delete("/:id", async (req, res) => {
-    try {
-        let movieId = req.params.id
+router.delete("/:id", verify, async (req, res) => {
+    if (req.params.isAdmin) {
+        try {
+            let movieId = req.params.id
 
-        let movie = await Movie.findOneAndDelete({ _id: movieId })
+            let movie = await Movie.findOneAndDelete({ _id: movieId })
 
-        if (movie) {
-            res.status(200).send({ message: "The movie has been deleted... ✅" })
+            if (movie) {
+                res.status(200).send({ message: "The movie has been deleted... ✅" })
+            }
+            else {
+                res.status(404).send({ message: "Movie not found !" })
+            }
+
+        } catch (error) {
+            res.status(400).send({ message: "error fetching movie" })
         }
-        else {
-            res.status(404).send({ message: "Movie not found !" })
-        }
-
-    } catch (error) {
-        res.status(400).send({ message: "error fetching movie" })
+    } else {
+        res.status(403).send({ message: "You're not allowed!" })
     }
+
 
 });
 
 //GET
 
-router.get("/find/:id", async (req, res) => {
+router.get("/find/:id", verify, async (req, res) => {
     try {
         let type = req.query.type;
         let movie;
@@ -91,7 +102,7 @@ router.get("/find/:id", async (req, res) => {
 
 //GET RANDOM MOVIE
 
-router.get("/random", async (req, res) => {
+router.get("/random", verify, async (req, res) => {
     try {
         let type = req.query.type;
         let movie;
@@ -120,13 +131,18 @@ router.get("/random", async (req, res) => {
 
 //GET ALL MOVIES & SERIES
 
-router.get("/find/", async (req, res) => {
-    try {
-        let movies = await Movie.find();
-        res.status(200).send(movies.reverse());
-    } catch (e) {
-        res.status(400).send({ message: "error fetching movies" });
+router.get("/find/", verify, async (req, res) => {
+    if (req.params.isAdmin) {
+        try {
+            let movies = await Movie.find();
+            res.status(200).send(movies.reverse());
+        } catch (e) {
+            res.status(400).send({ message: "error fetching movies" });
+        }
+    } else {
+        res.status(403).send({ message: "You're not allowed!" })
     }
+
 });
 
 module.exports = router;
